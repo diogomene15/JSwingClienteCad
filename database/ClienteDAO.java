@@ -22,7 +22,7 @@ public class ClienteDAO {
         }
     }
 
-    public int criar(Cliente cliente) {
+    public int insert(Cliente cliente) {
         int qtdLinhasAfetadas = 0;
         try {
 
@@ -53,7 +53,7 @@ public class ClienteDAO {
     }
 
 
-    public void atualizar(Cliente cliente) {
+    public void update(Cliente cliente) {
         try {
 
             PreparedStatement statementInsercao = con.createStatement(
@@ -109,6 +109,52 @@ public class ClienteDAO {
 			}
 		}
 		return arrayRes;
+	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static ArrayList<Produto> searchQuery(String cpf){
+		ArrayList<Produto> arrayRes = new ArrayList<>();
+		Connection conexaoPadrao = new ConnectionFactory().getConexao();
+		try {
+			PreparedStatement prepSt = conexaoPadrao.prepareStatement("SELECT * FROM produtos WHERE nome LIKE ?");
+			prepSt.setString(1, "%" + nome + "%"); 
+			ResultSet tuplasRes = prepSt.executeQuery(); 
+			while (tuplasRes.next()) {
+				arrayRes.add(new Produto(tuplasRes.getString("nome"), tuplasRes.getDouble("preco")));
+			}
+			ConnectionFactory.checkSearch(arrayRes);
+			return arrayRes;
+		} catch (SQLException e) {
+			System.out.println("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
+		} catch (EmptyQueryException e) {
+			System.out.println("Houve uma exceção: " + e.getMessage());
+		} finally {
+			try {
+				conexaoPadrao.close();
+			} catch (SQLException e) {
+				System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+			}
+		}
+		return arrayRes;
+	}	
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static boolean delete(Produto prod) {
+		Connection conexaoPadrao = new ConnectionFactory().getConexao();
+		try {
+			PreparedStatement prepSt = conexaoPadrao.prepareStatement("DELETE FROM produtos WHERE nome = ?");
+			prepSt.setString(1, prod.getNome());
+			return prepSt.execute();
+		} catch (SQLException e) {
+			System.out.println("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage() + "\n Exclusão não concluída.");
+			return false;
+		}  finally {
+			try {
+				conexaoPadrao.close();
+			} catch (SQLException e) {
+				System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+			}
+		}
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
