@@ -4,35 +4,56 @@ import java.sql.*;
 import java.util.Properties;
 
 public class Conexao {
-    private Connection conn;
+	private String database;
+	private String url;
+	private String user;
+	private String password;
+	private Connection conexao;
 
-    public Conexao(String url, String user, String password) throws SQLException {
-        Properties propriedadesBD = new Properties();
-        propriedadesBD.setProperty("user",user);
-        propriedadesBD.setProperty("password",password);
+	public Conexao(String database, String url, String user, String password) {
+		this.database = database;
+		this.url = url + this.database;
+		this.user = user;
+		this.password = password;
+		
+		try {
+			this.conexao = DriverManager.getConnection(this.url, this.user, this.password);
+		} catch (SQLException e) {
+			System.out.println("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage());
+		}
+	}
 
-        this.conn = DriverManager.getConnection(url, propriedadesBD);
-    }
-    public Conexao() throws SQLException {
-        this("jdbc:postgresql://localhost:5432/facom", "backend", "senha123");
-    }
+	public ConnectionFactory() {
+		this("estoque", "jdbc:mysql://localhost:3306/", "root", "123456789");
+	}
+
+	public Connection getConexao() {
+        if(this.conexao == null){
+            this.conexao =  DriverManager.getConnection(this.url, this.user, this.password);
+        }
+		return this.conexao;
+	}
+
+	public void closeConnection() throws SQLException{
+		this.conexao.close();
+	}
 
 //    private void migrate(){
 //        this.runQuery("")
 //    }
-    public ResultSet runQuery(String _sql) throws SQLException{
-        Statement st = this.conn.createStatement();
-        ResultSet rs = st.executeQuery(_sql);
-        st.close();
-        return rs;
-    }
-    public int runUpdate(String _sql) throws SQLException{
-        Statement st = this.conn.createStatement();
-        final int linhasAfetadas = st.executeUpdate(_sql);
-        st.close();
-        return linhasAfetadas;
-    }
-    public PreparedStatement createStatement(String sqlStatement) throws SQLException{
-        return this.conn.prepareStatement(sqlStatement);
-    }
+    // public ResultSet runQuery(String _sql) throws SQLException{
+    //     Statement st = this.conn.createStatement();
+    //     ResultSet rs = st.executeQuery(_sql);
+    //     st.close();
+    //     return rs;
+    // }
+    // public int runUpdate(String _sql) throws SQLException{
+    //     Statement st = this.conn.createStatement();
+    //     final int linhasAfetadas = st.executeUpdate(_sql);
+    //     st.close();
+    //     return linhasAfetadas;
+    // }
+    // public PreparedStatement createStatement(String sqlStatement) throws SQLException{
+    //     return this.conn.prepareStatement(sqlStatement);
+    // }
 }
