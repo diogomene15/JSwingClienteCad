@@ -36,6 +36,7 @@ public class Conexao {
 
 	public void closeConnection() throws SQLException{
 		this.conexao.close();
+		this.conexao = null;
 	}
 
 //    private void migrate(){

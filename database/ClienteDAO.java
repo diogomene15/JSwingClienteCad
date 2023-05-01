@@ -86,24 +86,30 @@ public class ClienteDAO {
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    	public static ArrayList<Produto> selectAll(){
-		ArrayList<Produto> arrayRes = new ArrayList<>();
-		Connection conexaoPadrao = new ConnectionFactory().getConexao(); 
+    public static ArrayList<Cliente> selectAll(){
+		ArrayList<Cliente> arrayRes = new ArrayList<>();
+		Connection conexaoPadrao = new Conexao().getConexao(); 
 		try {
-			PreparedStatement prepSt = conexaoPadrao.prepareStatement("SELECT * FROM produtos");
+			PreparedStatement prepSt = conexaoPadrao.prepareStatement("SELECT * FROM Cliente");
 			ResultSet tuplasRes = prepSt.executeQuery(); 
 			while (tuplasRes.next()) {
-				arrayRes.add(new Produto(tuplasRes.getString("nome"), tuplasRes.getDouble("preco")));
+                arrayRes.add(new Cliente(   tuplasRes.getString("Cpf"),
+                                            tuplasRes.getString("Nome"),
+                                            tuplasRes.getString("Fone"),
+                                            tuplasRes.getString("Email"),
+                                            tuplasRes.getDate("DataNascimento"),
+                                            tuplasRes.getString("Rua"),
+                                            tuplasRes.getInt("Numero"),
+                                            tuplasRes.getString("Bairro"),
+                                            tuplasRes.getString("Cidade"),
+                                            tuplasRes.getString("Uf")));
 			}
-			ConnectionFactory.checkSearch(arrayRes);
-			return (arrayRes);
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
-		} catch (EmptyQueryException e) {
-			System.out.println("Houve uma exceção: " + e.getMessage());
 		} finally {			
 			try {
 				conexaoPadrao.close();
+			     return arrayRes;
 			} catch (SQLException e) {
 				System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
@@ -113,17 +119,24 @@ public class ClienteDAO {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static ArrayList<Produto> searchQuery(String cpf){
-		ArrayList<Produto> arrayRes = new ArrayList<>();
-		Connection conexaoPadrao = new ConnectionFactory().getConexao();
+		ArrayList<Cliente> arrayRes = new ArrayList<>();
+		Connection conexaoPadrao = new Conexao().getConexao();
 		try {
-			PreparedStatement prepSt = conexaoPadrao.prepareStatement("SELECT * FROM produtos WHERE nome LIKE ?");
+			PreparedStatement prepSt = conexaoPadrao.prepareStatement("SELECT * FROM Cliente WHERE cpf LIKE ?");
 			prepSt.setString(1, "%" + nome + "%"); 
 			ResultSet tuplasRes = prepSt.executeQuery(); 
 			while (tuplasRes.next()) {
-				arrayRes.add(new Produto(tuplasRes.getString("nome"), tuplasRes.getDouble("preco")));
+                arrayRes.add(new Cliente(   tuplasRes.getString("Cpf"),
+                                            tuplasRes.getString("Nome"),
+                                            tuplasRes.getString("Fone"),
+                                            tuplasRes.getString("Email"),
+                                            tuplasRes.getDate("DataNascimento"),
+                                            tuplasRes.getString("Rua"),
+                                            tuplasRes.getInt("Numero"),
+                                            tuplasRes.getString("Bairro"),
+                                            tuplasRes.getString("Cidade"),
+                                            tuplasRes.getString("Uf")));
 			}
-			ConnectionFactory.checkSearch(arrayRes);
-			return arrayRes;
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
 		} catch (EmptyQueryException e) {
@@ -131,19 +144,18 @@ public class ClienteDAO {
 		} finally {
 			try {
 				conexaoPadrao.close();
+                return arrayRes;
 			} catch (SQLException e) {
 				System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
 		}
-		return arrayRes;
-	}	
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static boolean delete(Produto prod) {
-		Connection conexaoPadrao = new ConnectionFactory().getConexao();
+	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+	public static boolean delete(String cpf) {
+		Connection conexaoPadrao = new Conexao().getConexao();
 		try {
-			PreparedStatement prepSt = conexaoPadrao.prepareStatement("DELETE FROM produtos WHERE nome = ?");
-			prepSt.setString(1, prod.getNome());
+			PreparedStatement prepSt = conexaoPadrao.prepareStatement("DELETE FROM Cliente WHERE cpf = ?");
+			prepSt.setString(1, cpf);
 			return prepSt.execute();
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage() + "\n Exclusão não concluída.");
@@ -156,6 +168,6 @@ public class ClienteDAO {
 			}
 		}
 	}
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
 
 }
