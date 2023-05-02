@@ -8,25 +8,11 @@ import model.Cliente;
 public class ClienteDAO {
     //TODO: Lidar com erros de forma mais apropriada
 
-    private Conexao con;
-
-    public ClienteDAO() {
-        createConexao();
-    }
-
-    private void createConexao() {
-        try {
-            this.con = new Conexao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int insert(Cliente cliente) {
+    public static int insert(Cliente cliente) {
         int qtdLinhasAfetadas = 0;
+        Connection conexaoPadrao = new Conexao().getConexao();
         try {
-
-            PreparedStatement statementInsercao = con.createStatement(
+            PreparedStatement statementInsercao = conexaoPadrao.createStatement((
                     "INSERT INTO Cliente (cpf, nome, telefone, email," +
                             " dataNascimento, rua, numero, bairro, cidade, uf) VALUES (?,?,?,?,?,?,?,?,?,?)"
             );
@@ -47,16 +33,22 @@ public class ClienteDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao tentar criar usuário!");
             e.printStackTrace();
+        } finally {
+            try {
+                conexaoPadrao.close();
+            } catch (SQLException e) {
+                System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+            }
         }
 
         return qtdLinhasAfetadas;
     }
 
 
-    public void update(Cliente cliente) {
+    public static void update(Cliente cliente) {
+        Connection conexaoPadrao = new Conexao().getConexao();
         try {
-
-            PreparedStatement statementInsercao = con.createStatement(
+            PreparedStatement statementInsercao = conexaoPadrao.createStatement(
                     "UPDATE Cliente SET cpf = ?, nome = ?, telefone = ?, email = ?, " +
                     "dataNascimento = ?, rua = ?, numero = ?, bairro = ?, cidade = ?, uf = ?, " +
                     "WHERE cpf = ?"
@@ -79,6 +71,12 @@ public class ClienteDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao tentar atualizar usuário!");
             e.printStackTrace();
+        } finally {
+            try {
+                conexaoPadrao.close();
+            } catch (SQLException e) {
+                System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+            }
         }
     }
 
