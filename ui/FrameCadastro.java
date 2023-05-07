@@ -9,11 +9,10 @@ public class FrameCadastro extends JFrame {
 
     public static JPanel createFormItemPanel(String title, Component child, Dimension tam) {
         JPanel formItemPanel = new JPanel();
-        formItemPanel.setLayout(new GridLayout());
+        formItemPanel.setLayout(new GridLayout(1,2));
         formItemPanel.setPreferredSize(tam);
         formItemPanel.add(new JLabel(title));
         formItemPanel.add(child);
-
         return formItemPanel;
     }
 
@@ -48,7 +47,7 @@ public class FrameCadastro extends JFrame {
 
         JPanel cpfPanel = createFormItemPanel("CPF*:", cpfField, defaultFieldDimension);
         JPanel nomePanel = createFormItemPanel("Nome*:", nomeField, defaultFieldDimension);
-        JPanel ruaPanel = createFormItemPanel("Rua:", ruaField, halfFieldDimension);
+        JPanel ruaPanel = createFormItemPanel("Rua:", ruaField, defaultFieldDimension);
         JPanel numeroPanel = createFormItemPanel("Nº:", numeroField, halfFieldDimension);
         JPanel bairroPanel = createFormItemPanel("Bairro:", bairroField, halfFieldDimension);
         JPanel cidadePanel = createFormItemPanel("Cidade:", cidadeField, halfFieldDimension);
@@ -57,24 +56,27 @@ public class FrameCadastro extends JFrame {
         JPanel emailPanel = createFormItemPanel("E-mail:", emailField, halfFieldDimension);
         JPanel dataNascPanel = createFormItemPanel("Data nascimento:", dtNascimentoField, defaultFieldDimension);
 
+        JPanel contentPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
+
         this.setTitle(titulo);
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(tamanho);
-        this.setVisible(true);
 
-        this.add(cpfPanel);
-        this.add(nomePanel);
-        this.add(ruaPanel);
-        this.add(numeroPanel);
-        this.add(ruaPanel);
-        this.add(bairroPanel);
-        this.add(cidadePanel);
-        this.add(ufPanel);
-        this.add(telefonePanel);
-        this.add(emailPanel);
-        this.add(dataNascPanel);
+        contentPanel.add(cpfPanel);
+        contentPanel.add(nomePanel);
+        contentPanel.add(ruaPanel);
+        contentPanel.add(numeroPanel);
+        contentPanel.add(bairroPanel);
+        contentPanel.add(cidadePanel);
+        contentPanel.add(ufPanel);
+        contentPanel.add(telefonePanel);
+        contentPanel.add(emailPanel);
+        contentPanel.add(dataNascPanel);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        this.add(contentPanel);
+        this.setVisible(true);
 
     }
 
