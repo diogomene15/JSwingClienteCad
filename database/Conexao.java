@@ -3,13 +3,16 @@ package database;
 import java.sql.*;
 
 public class Conexao {
-	private final String url;
-	private final String user;
-	private final String password;
+	private String database;
+	private String url;
+	private String user;
+	private String password;
 	private Connection conexao;
+	private String args = "?useTimezone=true&serverTimezone=UTC";
 
 	public Conexao(String database, String url, String user, String password) {
-		this.url = url + database;
+		this.database = database;
+		this.url = url + this.database + this.args;
 		this.user = user;
 		this.password = password;
 		
@@ -21,7 +24,7 @@ public class Conexao {
 	}
 
 	public Conexao() {
-		this("estoque", "jdbc:mysql://localhost:3000/", "root", "123456789");
+		this("sgamet", "jdbc:mysql://localhost:3306/", "root", "123456789");
 	}
 
 	public Connection getConexao() throws SQLException {
