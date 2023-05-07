@@ -12,7 +12,7 @@ public class ClienteDAO {
         int qtdLinhasAfetadas = 0;
         Connection conexaoPadrao = new Conexao().getConexao();
         try {
-            PreparedStatement statementInsercao = conexaoPadrao.createStatement((
+            PreparedStatement statementInsercao = conexaoPadrao.createStatement(
                     "INSERT INTO Cliente (cpf, nome, telefone, email," +
                             " dataNascimento, rua, numero, bairro, cidade, uf) VALUES (?,?,?,?,?,?,?,?,?,?)"
             );
@@ -116,7 +116,7 @@ public class ClienteDAO {
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static ArrayList<Produto> searchQuery(String cpf){
+	public static ArrayList<Cliente> searchQuery(String cpf){
 		ArrayList<Cliente> arrayRes = new ArrayList<>();
 		Connection conexaoPadrao = new Conexao().getConexao();
 		try {
