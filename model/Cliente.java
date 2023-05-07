@@ -151,4 +151,18 @@ public class Cliente {
     public void setUf(String uf) {
         this.uf = uf;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Cpf: %s\nNome: %s\nFone: %s\nEmail: %s\nDataNascimento: %s\n"
+                            + "Rua: %s\nNumero: %s\nBairro: %s\n",
+                this.getCpf().toString()
+                , this.getNome().toString()
+                , this.getFone().toString()
+                , this.getEmail().toString()
+                , this.getDataNascimento().toString()
+                , this.getRua().toString()
+                , this.getNumero()
+                , this.getBairro().toString());
+    }
 }

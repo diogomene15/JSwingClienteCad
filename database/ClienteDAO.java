@@ -1,7 +1,7 @@
 package database;
 
 import model.Cliente;
-import ui.MensagemErro;
+import ui.Mensagem;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class ClienteDAO {
 	/*
    	use sgamet;
 	
-	create table cliente (
+	create table Cliente (
 		cpf VARCHAR(12) PRIMARY KEY,
 	    nome VARCHAR(100),
 	    telefone VARCHAR(14),
@@ -48,13 +48,13 @@ public class ClienteDAO {
             qtdLinhasAfetadas = statementInsercao.executeUpdate();
 
         } catch (SQLException e) {
-            MensagemErro.show("Erro ao tentar criar usuário!");
+            Mensagem.showError("Erro ao tentar criar usuário!");
             e.printStackTrace();
         } finally {
             try {
                 conexaoPadrao.close();
             } catch (SQLException e) {
-                MensagemErro.show("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+                Mensagem.showError("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
             }
         }
 
@@ -86,13 +86,13 @@ public class ClienteDAO {
             statementInsercao.execute();
 
         } catch (SQLException e) {
-            MensagemErro.show("Erro ao tentar atualizar usuário!");
+            Mensagem.showError("Erro ao tentar atualizar usuário!");
             e.printStackTrace();
         } finally {
             try {
                 conexaoPadrao.close();
             } catch (SQLException e) {
-                MensagemErro.show("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+                Mensagem.showError("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
             }
         }
     }
@@ -110,7 +110,7 @@ public class ClienteDAO {
 			while (tuplasRes.next()) {
                 arrayRes.add(new Cliente(   tuplasRes.getString("Cpf"),
                                             tuplasRes.getString("Nome"),
-                                            tuplasRes.getString("Fone"),
+                                            tuplasRes.getString("Telefone"),
                                             tuplasRes.getString("Email"),
                                             tuplasRes.getDate("DataNascimento"),
                                             tuplasRes.getString("Rua"),
@@ -120,12 +120,12 @@ public class ClienteDAO {
                                             tuplasRes.getString("Uf")));
 			}
 		} catch (SQLException e) {
-			MensagemErro.show("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
+			Mensagem.showError("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
 		} finally {			
 			try {
 				conexaoPadrao.close();
 			} catch (SQLException e) {
-				MensagemErro.show("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+				Mensagem.showError("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
 		}
 		return arrayRes;
@@ -152,12 +152,12 @@ public class ClienteDAO {
                                             tuplasRes.getString("Uf")));
 			}
 		} catch (SQLException e) {
-			MensagemErro.show("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
+			Mensagem.showError("Ocorreu um erro na execução da query de consulta: " + e.getMessage());
 		} finally {
 			try {
 				conexaoPadrao.close();
 			} catch (SQLException e) {
-				MensagemErro.show("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+				Mensagem.showError("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
 		}
 		return arrayRes;
@@ -170,13 +170,13 @@ public class ClienteDAO {
 			prepSt.setString(1, cpf);
 			return prepSt.execute();
 		} catch (SQLException e) {
-			MensagemErro.show("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage() + "\n Exclusão não concluída.");
+			Mensagem.showError("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage() + "\n Exclusão não concluída.");
 			return false;
 		}  finally {
 			try {
 				conexaoPadrao.close();
 			} catch (SQLException e) {
-				MensagemErro.show("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
+				Mensagem.showError("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
 		}
 	}

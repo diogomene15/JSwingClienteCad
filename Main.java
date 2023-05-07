@@ -9,7 +9,7 @@ public class Main {
     public static void main(String [] args){
 
         try {
-            ClienteDAO.selectAll();
+            ClienteDAO.selectAll().forEach(e->{System.out.println(e);});
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

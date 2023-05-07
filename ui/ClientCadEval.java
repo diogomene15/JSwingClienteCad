@@ -9,52 +9,55 @@ public class ClientCadEval {
                                           String ruaField, String numeroField, String bairroField, String cidadeField, String ufField) {
         SimpleDateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
         boolean camposPreenchidos = false;
-        if (cpfField.length() == 0){
-            MensagemErro.show("O cpf deve ser informado");
+        if (cpfField.replaceAll("[^0-9]", "").length() == 0){
+            Mensagem.showError("O cpf deve ser informado");
         }
         else if (nomeField.length() == 0){
-            MensagemErro.show("O nome deve ser informado");
+            Mensagem.showError("O nome deve ser informado");
         }
         else if (telefoneField.length() == 0){
-            MensagemErro.show("O telefone deve ser informado");
+            Mensagem.showError("O telefone deve ser informado");
         }
         else if (emailField.length() == 0){
-            MensagemErro.show("O email deve ser informado");
+            Mensagem.showError("O email deve ser informado");
         }
-        else if (dtNascimentoField.length() == 0){
-            MensagemErro.show("A data de nascimento deve ser informada");
+        else if (dtNascimentoField.replaceAll("[^0-9]", "").length() == 0){
+            Mensagem.showError("A data de nascimento deve ser informada");
         }
         else if (ruaField.length() == 0){
-            MensagemErro.show("A rua deve ser informada");
+            Mensagem.showError("A rua deve ser informada");
         }
-        else if (numeroField.length() == 0){
-            MensagemErro.show("O numero deve ser informado");
+        else if (numeroField.replaceAll("[^0-9]", "").length() == 0){
+            Mensagem.showError("O numero deve ser informado de maneira válida [caracteres não numéricos não serão considerados!]");
         }
         else if (bairroField.length() == 0){
-            MensagemErro.show("O bairro deve ser informado");
+            Mensagem.showError("O bairro deve ser informado");
         }
         else if (cidadeField.length() == 0){
-            MensagemErro.show("A cidade deve ser informada");
+            Mensagem.showError("A cidade deve ser informada");
         }
         else if (ufField.length() == 0){
-            MensagemErro.show("A uf deve ser informada");
+            Mensagem.showError("A uf deve ser informada");
         }else{
             camposPreenchidos = true;
         }
 
         Cliente novoCLiente = null;
         if(camposPreenchidos){
+            dtNascimentoField = dtNascimentoField.replaceAll("^[0-9]","");
+            cpfField = cpfField.replaceAll("[^0-9]", "");
+            numeroField = numeroField.replaceAll("[^0-9]", "");
             try {
                 novoCLiente = new Cliente(cpfField, nomeField, telefoneField, emailField, new Date(formatData.parse(dtNascimentoField).getTime()), ruaField, Integer.parseInt(numeroField), bairroField, cidadeField, ufField);
             } catch (Exception err) {
-
+                Mensagem.showError("Erro ao tentar montar objeto de 'Cliente'");
+                err.printStackTrace();
+            }
+            if (novoCLiente!= null && !Cliente.validarCPF(novoCLiente.getCpf())) {
+                Mensagem.showError(String.format("O CPF %s é inválido!!",cpfField));
+                novoCLiente = null;
             }
         }
-        if (!Cliente.validarCPF(novoCLiente.getCpf())) {
-            MensagemErro.show(String.format("O CPF %s é inválido!!",cpfField));
-            novoCLiente = null;
-        }
-
         return novoCLiente;
     }
 }

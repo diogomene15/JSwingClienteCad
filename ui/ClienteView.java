@@ -21,7 +21,7 @@ public class ClienteView extends JFrame {
     }
 
     public ClienteView(String titulo, Dimension tamanho) {
-
+        String[] ufOptions = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
         Dimension defaultFieldDimension = new Dimension(400, 40);
         Dimension halfFieldDimension = new Dimension(200, 40);
 
@@ -44,7 +44,7 @@ public class ClienteView extends JFrame {
         JTextField numeroField = new JTextField();
         JTextField bairroField = new JTextField();
         JTextField cidadeField = new JTextField();
-        JTextField ufField = new JTextField();
+        JComboBox<String> ufField = new JComboBox<String>(ufOptions);
         JTextField telefoneField = new JTextField();
         JTextField emailField = new JTextField();
         JFormattedTextField dtNascimentoField = new JFormattedTextField(mascaraData);
@@ -62,13 +62,17 @@ public class ClienteView extends JFrame {
                     numeroField.getText(),
                     bairroField.getText(),
                     cidadeField.getText(),
-                    ufField.getText()
+                    ufField.getItemAt(ufField.getSelectedIndex())
             );
+            System.out.println("CHECK 1");
             if(novoCLiente != null){
+                System.out.println("CHECK 2");
                 try{
-                    ClienteDAO.insert(novoCLiente);
+                    if(ClienteDAO.insert(novoCLiente)==1){
+                        Mensagem.showSucces("Cliente cadastrado com sucesso!");
+                    };
                 }catch (SQLException err){
-                    MensagemErro.show("Erro ao cadastrar cliente no banco de dados!.");
+                    Mensagem.showError("Erro ao cadastrar cliente no banco de dados!.");
                 }
             }
         });
