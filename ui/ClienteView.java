@@ -1,24 +1,28 @@
 package ui;
 
+import database.ClienteDAO;
+import model.Cliente;
+
 import javax.swing.*;
 
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.sql.SQLException;
 
-public class FrameCadastro extends JFrame {
+public class ClienteView extends JFrame {
 
     public static JPanel createFormItemPanel(String title, Component child, Dimension tam) {
         JPanel formItemPanel = new JPanel();
-        formItemPanel.setLayout(new GridLayout(1,2));
+        formItemPanel.setLayout(new GridLayout(1, 2));
         formItemPanel.setPreferredSize(tam);
         formItemPanel.add(new JLabel(title));
         formItemPanel.add(child);
         return formItemPanel;
     }
 
-    public FrameCadastro(String titulo, Dimension tamanho) {
+    public ClienteView(String titulo, Dimension tamanho) {
 
-        Dimension defaultFieldDimension =  new Dimension(400,40);
+        Dimension defaultFieldDimension = new Dimension(400, 40);
         Dimension halfFieldDimension = new Dimension(200, 40);
 
         MaskFormatter mascaraCPF = new MaskFormatter();
@@ -45,6 +49,29 @@ public class FrameCadastro extends JFrame {
         JTextField emailField = new JTextField();
         JFormattedTextField dtNascimentoField = new JFormattedTextField(mascaraData);
 
+        JButton btnCadastrar = new JButton("Cadastrar");
+        JButton btnCancelar = new JButton("Cancelar");
+        btnCadastrar.addActionListener(e -> {
+            Cliente novoCLiente = ClientCadEval.gerarPreCliente(
+                    cpfField.getText(),
+                    nomeField.getText(),
+                    telefoneField.getText(),
+                    emailField.getText(),
+                    dtNascimentoField.getText(),
+                    ruaField.getText(),
+                    numeroField.getText(),
+                    bairroField.getText(),
+                    cidadeField.getText(),
+                    ufField.getText()
+            );
+            if(novoCLiente != null){
+                try{
+                    ClienteDAO.insert(novoCLiente);
+                }catch (SQLException err){
+                    MensagemErro.show("Erro ao cadastrar cliente no banco de dados!.");
+                }
+            }
+        });
         JPanel cpfPanel = createFormItemPanel("CPF*:", cpfField, defaultFieldDimension);
         JPanel nomePanel = createFormItemPanel("Nome*:", nomeField, defaultFieldDimension);
         JPanel ruaPanel = createFormItemPanel("Rua:", ruaField, defaultFieldDimension);
@@ -55,7 +82,6 @@ public class FrameCadastro extends JFrame {
         JPanel telefonePanel = createFormItemPanel("Fone:", telefoneField, halfFieldDimension);
         JPanel emailPanel = createFormItemPanel("E-mail:", emailField, halfFieldDimension);
         JPanel dataNascPanel = createFormItemPanel("Data nascimento:", dtNascimentoField, defaultFieldDimension);
-
         JPanel contentPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
         this.setTitle(titulo);
@@ -73,6 +99,9 @@ public class FrameCadastro extends JFrame {
         contentPanel.add(telefonePanel);
         contentPanel.add(emailPanel);
         contentPanel.add(dataNascPanel);
+        contentPanel.add(new JSeparator());
+        contentPanel.add(btnCadastrar);
+        contentPanel.add(btnCancelar);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         this.add(contentPanel);

@@ -27,6 +27,55 @@ public class Cliente {
         this.uf = uf;
     }
 
+    public static boolean validarCPF(String cpf) {
+
+        // Removendo caracteres inválidos
+        cpf = cpf.replaceAll("[^0-9]", "");
+
+        // Verificando se o CPF tem 11 dígitos
+        if (cpf.length() != 11) {
+            return false;
+        }
+
+        // Verificando se todos os dígitos são iguais
+        boolean todosIguais = true;
+        for (int i = 1; i < 11; i++) {
+            if (cpf.charAt(i) != cpf.charAt(0)) {
+                todosIguais = false;
+                break;
+            }
+        }
+        if (todosIguais) {
+            return false;
+        }
+
+        // Verificando o primeiro dígito verificador
+        int soma = 0;
+        for (int i = 0; i < 9; i++) {
+            int digito = Character.getNumericValue(cpf.charAt(i));
+            soma += digito * (10 - i);
+        }
+        int resto = soma % 11;
+        int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+        if (primeiroDigitoVerificador != Character.getNumericValue(cpf.charAt(9))) {
+            return false;
+        }
+
+        // Verificando o segundo dígito verificador
+        soma = 0;
+        for (int i = 0; i < 10; i++) {
+            int digito = Character.getNumericValue(cpf.charAt(i));
+            soma += digito * (11 - i);
+        }
+        resto = soma % 11;
+        int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+        if (segundoDigitoVerificador != Character.getNumericValue(cpf.charAt(10))) {
+            return false;
+        }
+
+        return true;
+    }
+
     public String getCpf() {
         return cpf;
     }

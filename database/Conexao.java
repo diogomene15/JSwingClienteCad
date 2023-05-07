@@ -6,37 +6,23 @@ public class Conexao {
 	private final String url;
 	private final String user;
 	private final String password;
-	private Connection conexao;
 
-	public Conexao(String database, String url, String user, String password) {
+	public Conexao(String url, String database, String user, String password) {
 		String args = "?useTimezone=true&serverTimezone=UTC";
 		this.url = url + database + args;
 		this.user = user;
 		this.password = password;
-		
-		try {
-			this.conexao = DriverManager.getConnection(this.url, this.user, this.password);
-		} catch (SQLException e) {
-			System.out.println("Ocorreu um erro na conexao com o banco de dados MySQL: " + e.getMessage());
-		}
+
 	}
 
 	public Conexao() {
-		this("sgamet", "jdbc:mysql://localhost:3306/", "root", "123456789");
+		this("jdbc:mysql://sql10.freemysqlhosting.net/","sql10616670", "sql10616670", "pu7KvT5WaI");
+
 	}
 
 	public Connection getConexao() throws SQLException {
-        if(this.conexao == null){
-            this.conexao =  DriverManager.getConnection(this.url, this.user, this.password);
-        }
-		return this.conexao;
+		return  DriverManager.getConnection(this.url, this.user, this.password);
 	}
-
-	public void closeConnection() throws SQLException{
-		this.conexao.close();
-		this.conexao = null;
-	}
-
 //    private void migrate(){
 //        this.runQuery("")
 //    }
