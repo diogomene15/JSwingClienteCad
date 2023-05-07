@@ -1,18 +1,15 @@
 package database;
 
 import java.sql.*;
-import java.util.Properties;
 
 public class Conexao {
-	private String database;
-	private String url;
-	private String user;
-	private String password;
+	private final String url;
+	private final String user;
+	private final String password;
 	private Connection conexao;
 
 	public Conexao(String database, String url, String user, String password) {
-		this.database = database;
-		this.url = url + this.database;
+		this.url = url + database;
 		this.user = user;
 		this.password = password;
 		
@@ -27,7 +24,7 @@ public class Conexao {
 		this("estoque", "jdbc:mysql://localhost:3000/", "root", "123456789");
 	}
 
-	public Connection getConexao() {
+	public Connection getConexao() throws SQLException {
         if(this.conexao == null){
             this.conexao =  DriverManager.getConnection(this.url, this.user, this.password);
         }
