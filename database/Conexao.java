@@ -3,16 +3,14 @@ package database;
 import java.sql.*;
 
 public class Conexao {
-	private String database;
-	private String url;
-	private String user;
-	private String password;
+	private final String url;
+	private final String user;
+	private final String password;
 	private Connection conexao;
-	private String args = "?useTimezone=true&serverTimezone=UTC";
 
 	public Conexao(String database, String url, String user, String password) {
-		this.database = database;
-		this.url = url + this.database + this.args;
+		String args = "?useTimezone=true&serverTimezone=UTC";
+		this.url = url + database + args;
 		this.user = user;
 		this.password = password;
 		

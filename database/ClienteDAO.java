@@ -1,8 +1,9 @@
 package database;
 
+import model.Cliente;
+
 import java.sql.*;
 import java.util.ArrayList;
-
 public class ClienteDAO {
     //TODO: Lidar com erros de forma mais apropriada
 	
@@ -122,7 +123,6 @@ public class ClienteDAO {
 		} finally {			
 			try {
 				conexaoPadrao.close();
-			     return arrayRes;
 			} catch (SQLException e) {
 				System.out.println("Ocorreu uma exceção ao fechar a conexão: " + e.getMessage());
 			}
