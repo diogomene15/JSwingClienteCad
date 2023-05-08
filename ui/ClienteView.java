@@ -64,9 +64,7 @@ public class ClienteView extends JFrame {
                     cidadeField.getText(),
                     ufField.getItemAt(ufField.getSelectedIndex())
             );
-            System.out.println("CHECK 1");
             if(novoCLiente != null){
-                System.out.println("CHECK 2");
                 try{
                     if(ClienteDAO.insert(novoCLiente)==1){
                         Mensagem.showSucces("Cliente cadastrado com sucesso!");
@@ -87,7 +85,10 @@ public class ClienteView extends JFrame {
         JPanel emailPanel = createFormItemPanel("E-mail:", emailField, halfFieldDimension);
         JPanel dataNascPanel = createFormItemPanel("Data nascimento:", dtNascimentoField, defaultFieldDimension);
         JPanel contentPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
-
+        JPanel btnsPanel = new JPanel();
+        btnsPanel.setLayout(new GridLayout(1, 2));
+        btnsPanel.add(btnCadastrar);
+        btnsPanel.add(btnCancelar);
         this.setTitle(titulo);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -104,8 +105,9 @@ public class ClienteView extends JFrame {
         contentPanel.add(emailPanel);
         contentPanel.add(dataNascPanel);
         contentPanel.add(new JSeparator());
-        contentPanel.add(btnCadastrar);
-        contentPanel.add(btnCancelar);
+
+
+        contentPanel.add(btnsPanel);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         this.add(contentPanel);

@@ -47,9 +47,15 @@ public class ClienteDAO {
 
             qtdLinhasAfetadas = statementInsercao.executeUpdate();
 
-        } catch (SQLException e) {
+        }
+        catch (SQLIntegrityConstraintViolationException e){
+            if(e.getMessage().contains("Duplicate entry")){
+                Mensagem.showError("Cliente já cadastrado.");
+            }
+        }
+        catch (SQLException e) {
             Mensagem.showError("Erro ao tentar criar usuário!");
-            e.printStackTrace();
+
         } finally {
             try {
                 conexaoPadrao.close();

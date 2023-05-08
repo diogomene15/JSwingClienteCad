@@ -51,10 +51,9 @@ public class ClientCadEval {
                 novoCLiente = new Cliente(cpfField, nomeField, telefoneField, emailField, new Date(formatData.parse(dtNascimentoField).getTime()), ruaField, Integer.parseInt(numeroField), bairroField, cidadeField, ufField);
             } catch (Exception err) {
                 Mensagem.showError("Erro ao tentar montar objeto de 'Cliente'");
-                err.printStackTrace();
             }
             if (novoCLiente!= null && !Cliente.validarCPF(novoCLiente.getCpf())) {
-                Mensagem.showError(String.format("O CPF %s é inválido!!",cpfField));
+                Mensagem.showError(String.format("CPF inválido!",cpfField));
                 novoCLiente = null;
             }
         }
