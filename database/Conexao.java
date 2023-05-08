@@ -23,22 +23,4 @@ public class Conexao {
 	public Connection getConexao() throws SQLException {
 		return  DriverManager.getConnection(this.url, this.user, this.password);
 	}
-//    private void migrate(){
-//        this.runQuery("")
-//    }
-    // public ResultSet runQuery(String _sql) throws SQLException{
-    //     Statement st = this.conn.createStatement();
-    //     ResultSet rs = st.executeQuery(_sql);
-    //     st.close();
-    //     return rs;
-    // }
-    // public int runUpdate(String _sql) throws SQLException{
-    //     Statement st = this.conn.createStatement();
-    //     final int linhasAfetadas = st.executeUpdate(_sql);
-    //     st.close();
-    //     return linhasAfetadas;
-    // }
-    // public PreparedStatement createStatement(String sqlStatement) throws SQLException{
-    //     return this.conn.prepareStatement(sqlStatement);
-    // }
 }

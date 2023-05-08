@@ -69,11 +69,7 @@ public class Cliente {
         }
         resto = soma % 11;
         int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
-        if (segundoDigitoVerificador != Character.getNumericValue(cpf.charAt(10))) {
-            return false;
-        }
-
-        return true;
+        return segundoDigitoVerificador == Character.getNumericValue(cpf.charAt(10));
     }
 
     public String getCpf() {
@@ -154,15 +150,23 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return String.format("Cpf: %s\nNome: %s\nFone: %s\nEmail: %s\nDataNascimento: %s\n"
-                            + "Rua: %s\nNumero: %s\nBairro: %s\n",
-                this.getCpf().toString()
-                , this.getNome().toString()
-                , this.getFone().toString()
-                , this.getEmail().toString()
+        return String.format("""
+                        Cpf: %s
+                        Nome: %s
+                        Fone: %s
+                        Email: %s
+                        DataNascimento: %s
+                        Rua: %s
+                        Numero: %s
+                        Bairro: %s
+                        """,
+                this.getCpf()
+                , this.getNome()
+                , this.getFone()
+                , this.getEmail()
                 , this.getDataNascimento().toString()
-                , this.getRua().toString()
+                , this.getRua()
                 , this.getNumero()
-                , this.getBairro().toString());
+                , this.getBairro());
     }
 }
